@@ -1,0 +1,387 @@
+Title: OmniSafe Wrapper - 
+
+Paragraphs:
+- get started
+- mathematical theory
+- base rl algorithms
+- safe rl algorithms
+- base rl algorithms api
+- safe rl algorithms api
+- common api
+- utils api
+- models api
+- envs api
+- TimeLimit(env, time_limit, device)
+- Time limit wrapper for the environment.
+- AutoReset(env, device)
+- Auto reset the environment when the episode is terminated.
+- ObsNormalize(env, device[, norm])
+- Normalize the observation.
+- RewardNormalize(env, device[, norm])
+- Normalize the reward.
+- CostNormalize(env, device[, norm])
+- Normalize the cost.
+- ActionScale(env, device, low, high)
+- Scale the action space to a given range.
+- Unsqueeze(env, device)
+- Unsqueeze the observation, reward, cost, terminated, truncated and info.
+- Documentation
+- Time limit wrapper for the environment.
+- Warning
+- The time limit wrapper only supports single environment.
+- Examples
+- env (CMDP) – The environment to wrap.
+- time_limit (int) – The time limit for each episode.
+- device (torch.device) – The torch device to use.
+- _time_limit (int) – The time limit for each episode.
+- _time (int) – The current time step.
+- Initialize an instance of TimeLimit.
+- Reset the environment.
+- Note
+- Additionally, the time step will be reset to 0.
+- seed (int, optional) – The random seed. Defaults to None.
+- options (dict[str, Any], optional) – The options for the environment. Defaults to None.
+- observation – The initial observation of the space.
+- info – Some information logged by the environment.
+- tuple[torch.Tensor, dict[str, Any]]
+- Run one timestep of the environment’s dynamics using the agent actions.
+- Note
+- Additionally, the time step will be increased by 1.
+- action (torch.Tensor) – The action from the agent or random.
+- observation – The agent’s observation of the current environment.
+- reward – The amount of reward returned after previous action.
+- cost – The amount of cost returned after previous action.
+- terminated – Whether the episode has ended.
+- truncated – Whether the episode has been truncated due to a time limit.
+- info – Some information logged by the environment.
+- tuple[Tensor, Tensor, Tensor, Tensor, Tensor, dict[str, Any]]
+- Documentation
+- Auto reset the environment when the episode is terminated.
+- Examples
+- env (CMDP) – The environment to wrap.
+- device (torch.device) – The torch device to use.
+- Initialize an instance of AutoReset.
+- Run one timestep of the environment’s dynamics using the agent actions.
+- Note
+- If the episode is terminated, the environment will be reset. The obs will be the
+first observation of the new episode. And the true final observation will be stored in
+info['final_observation'].
+- action (torch.Tensor) – The action from the agent or random.
+- observation – The agent’s observation of the current environment.
+- reward – The amount of reward returned after previous action.
+- cost – The amount of cost returned after previous action.
+- terminated – Whether the episode has ended.
+- truncated – Whether the episode has been truncated due to a time limit.
+- info – Some information logged by the environment.
+- tuple[Tensor, Tensor, Tensor, Tensor, Tensor, dict[str, Any]]
+- Documentation
+- Normalize the observation.
+- Examples
+- env (CMDP) – The environment to wrap.
+- device (torch.device) – The torch device to use.
+- norm (Normalizer or None, optional) – The normalizer to use. Defaults to None.
+- Initialize an instance of ObsNormalize.
+- Reset the environment and returns an initial observation.
+- seed (int, optional) – The random seed. Defaults to None.
+- options (dict[str, Any], optional) – The options for the environment. Defaults to None.
+- observation – The initial observation of the space.
+- info – Some information logged by the environment.
+- tuple[torch.Tensor, dict[str, Any]]
+- Save the observation normalizer.
+:rtype: dict[str, Module]
+- Note
+- The saved components will be stored in the wrapped environment. If the environment is
+not wrapped, the saved components will be empty dict. common wrappers are obs_normalize,
+reward_normalize, and cost_normalize. When evaluating the saved model, the normalizer
+should be loaded.
+- The saved components, that is the observation normalizer.
+- Run one timestep of the environment’s dynamics using the agent actions.
+- Note
+- The observation and the info['final_observation'] will be normalized.
+- action (torch.Tensor) – The action from the agent or random.
+- observation – The agent’s observation of the current environment.
+- reward – The amount of reward returned after previous action.
+- cost – The amount of cost returned after previous action.
+- terminated – Whether the episode has ended.
+- truncated – Whether the episode has been truncated due to a time limit.
+- info – Some information logged by the environment.
+- tuple[Tensor, Tensor, Tensor, Tensor, Tensor, dict[str, Any]]
+- Documentation
+- Normalize the reward.
+- Examples
+- env (CMDP) – The environment to wrap.
+- device (torch.device) – The torch device to use.
+- norm (Normalizer or None, optional) – The normalizer to use. Defaults to None.
+- Initialize an instance of RewardNormalize.
+- Save the reward normalizer.
+:rtype: dict[str, Module]
+- Note
+- The saved components will be stored in the wrapped environment. If the environment is
+not wrapped, the saved components will be empty dict. common wrappers are obs_normalize,
+reward_normalize, and cost_normalize.
+- The saved components, that is the reward normalizer.
+- Run one timestep of the environment’s dynamics using the agent actions.
+- Note
+- The reward will be normalized for agent training. Then the original reward will be
+stored in info['original_reward'] for logging.
+- action (torch.Tensor) – The action from the agent or random.
+- observation – The agent’s observation of the current environment.
+- reward – The amount of reward returned after previous action.
+- cost – The amount of cost returned after previous action.
+- terminated – Whether the episode has ended.
+- truncated – Whether the episode has been truncated due to a time limit.
+- info – Some information logged by the environment.
+- tuple[Tensor, Tensor, Tensor, Tensor, Tensor, dict[str, Any]]
+- Documentation
+- Normalize the cost.
+- Examples
+- env (CMDP) – The environment to wrap.
+- device (torch.device) – The torch device to use.
+- norm (Normalizer or None, optional) – The normalizer to use. Defaults to None.
+- Initialize an instance of CostNormalize.
+- Save the cost normalizer.
+:rtype: dict[str, Module]
+- Note
+- The saved components will be stored in the wrapped environment. If the environment is
+not wrapped, the saved components will be empty dict. common wrappers are obs_normalize,
+reward_normalize, and cost_normalize.
+- The saved components, that is the cost normalizer.
+- Run one timestep of the environment’s dynamics using the agent actions.
+- Note
+- The cost will be normalized for agent training. Then the original reward will be stored
+in info['original_cost'] for logging.
+- action (torch.Tensor) – The action from the agent or random.
+- observation – The agent’s observation of the current environment.
+- reward – The amount of reward returned after previous action.
+- cost – The amount of cost returned after previous action.
+- terminated – Whether the episode has ended.
+- truncated – Whether the episode has been truncated due to a time limit.
+- info – Some information logged by the environment.
+- tuple[Tensor, Tensor, Tensor, Tensor, Tensor, dict[str, Any]]
+- Documentation
+- Scale the action space to a given range.
+- Examples
+- env (CMDP) – The environment to wrap.
+- device (torch.device) – The device to use.
+- low (int or float) – The lower bound of the action space.
+- high (int or float) – The upper bound of the action space.
+- Initialize an instance of ActionScale.
+- Run one timestep of the environment’s dynamics using the agent actions.
+- Note
+- The action will be scaled to the original range for agent training.
+- action (torch.Tensor) – The action from the agent or random.
+- observation – The agent’s observation of the current environment.
+- reward – The amount of reward returned after previous action.
+- cost – The amount of cost returned after previous action.
+- terminated – Whether the episode has ended.
+- truncated – Whether the episode has been truncated due to a time limit.
+- info – Some information logged by the environment.
+- tuple[Tensor, Tensor, Tensor, Tensor, Tensor, dict[str, Any]]
+- Documentation
+- Repeat action given times.
+- Example
+- Initialize the wrapper.
+- env (CMDP) – The environment to wrap.
+- times (int) – The number of times to repeat the action.
+- device (device) – The device to use.
+- Run self._times timesteps of the environment’s dynamics using the agent actions.
+- action (torch.Tensor) – The action from the agent or random.
+- observation – The agent’s observation of the current environment.
+- reward – The amount of reward returned after previous action.
+- cost – The amount of cost returned after previous action.
+- terminated – Whether the episode has ended.
+- truncated – Whether the episode has been truncated due to a time limit.
+- info – Some information logged by the environment.
+- tuple[Tensor, Tensor, Tensor, Tensor, Tensor, dict[str, Any]]
+- Documentation
+- Unsqueeze the observation, reward, cost, terminated, truncated and info.
+- Examples
+- Initialize an instance of Unsqueeze.
+- Reset the environment and returns a new observation.
+- Note
+- The vector information will be unsqueezed to (1, dim) for agent training.
+- seed (int, optional) – The random seed. Defaults to None.
+- options (dict[str, Any], optional) – The options for the environment. Defaults to None.
+- observation – The initial observation of the space.
+- info – Some information logged by the environment.
+- tuple[torch.Tensor, dict[str, Any]]
+- Run one timestep of the environment’s dynamics using the agent actions.
+- Note
+- The vector information will be unsqueezed to (1, dim) for agent training.
+- action (torch.Tensor) – The action from the agent or random.
+- observation – The agent’s observation of the current environment.
+- reward – The amount of reward returned after previous action.
+- cost – The amount of cost returned after previous action.
+- terminated – Whether the episode has ended.
+- truncated – Whether the episode has been truncated due to a time limit.
+- info – Some information logged by the environment.
+- tuple[Tensor, Tensor, Tensor, Tensor, Tensor, dict[str, Any]]
+
+Links:
+- ../index.html
+- ../index.html
+- ../start/installation.html
+- ../start/usage.html
+- ../foundations/notations.html
+- ../foundations/vector.html
+- ../foundations/lagrange.html
+- ../baserl/trpo.html
+- ../baserl/ppo.html
+- ../saferl/cpo.html
+- ../saferl/pcpo.html
+- ../saferl/focops.html
+- ../saferl/lag.html
+- ../baserlapi/on_policy.html
+- ../baserlapi/off_policy.html
+- ../baserlapi/model_based.html
+- ../saferlapi/first_order.html
+- ../saferlapi/second_order.html
+- ../saferlapi/lagrange.html
+- ../saferlapi/penalty_function.html
+- ../saferlapi/model_based.html
+- ../common/buffer.html
+- ../common/exp_grid.html
+- ../common/lagrange.html
+- ../common/normalizer.html
+- ../common/logger.html
+- ../common/simmer_agent.html
+- ../common/stastics_tool.html
+- ../common/offline_data.html
+- ../utils/config.html
+- ../utils/distributed.html
+- ../utils/math.html
+- ../utils/model.html
+- ../utils/tools.html
+- ../utils/plotter.html
+- ../model/actor.html
+- ../model/critic.html
+- ../model/actor_critic.html
+- ../model/modelbased_model.html
+- ../model/modelbased_planner.html
+- ../model/offline.html
+- core.html
+- #
+- safety_gymnasium.html
+- mujoco_env.html
+- adapter.html
+- /en/latest/
+- /en/stable/
+- /en/dev/
+- //readthedocs.org/projects/omnisafe/?fromdocs=omnisafe
+- //readthedocs.org/builds/omnisafe/?fromdocs=omnisafe
+- #
+- https://github.com/PKU-Alignment/OmniSafe/edit/main/docs/source/envs/wrapper.rst
+- #omnisafe-wrapper
+- #omnisafe.envs.wrapper.TimeLimit
+- #omnisafe.envs.wrapper.AutoReset
+- #omnisafe.envs.wrapper.ObsNormalize
+- #omnisafe.envs.wrapper.RewardNormalize
+- #omnisafe.envs.wrapper.CostNormalize
+- #omnisafe.envs.wrapper.ActionScale
+- #omnisafe.envs.wrapper.Unsqueeze
+- #time-limit-wrapper
+- ../_modules/omnisafe/envs/wrapper.html#TimeLimit
+- #omnisafe.envs.wrapper.TimeLimit
+- core.html#omnisafe.envs.core.CMDP
+- #omnisafe.envs.wrapper.TimeLimit
+- ../_modules/omnisafe/envs/wrapper.html#TimeLimit.reset
+- #omnisafe.envs.wrapper.TimeLimit.reset
+- ../_modules/omnisafe/envs/wrapper.html#TimeLimit.step
+- #omnisafe.envs.wrapper.TimeLimit.step
+- #auto-reset-wrapper
+- ../_modules/omnisafe/envs/wrapper.html#AutoReset
+- #omnisafe.envs.wrapper.AutoReset
+- core.html#omnisafe.envs.core.CMDP
+- #omnisafe.envs.wrapper.AutoReset
+- ../_modules/omnisafe/envs/wrapper.html#AutoReset.step
+- #omnisafe.envs.wrapper.AutoReset.step
+- #observation-normalization-wrapper
+- ../_modules/omnisafe/envs/wrapper.html#ObsNormalize
+- #omnisafe.envs.wrapper.ObsNormalize
+- core.html#omnisafe.envs.core.CMDP
+- ../common/normalizer.html#omnisafe.common.normalizer.Normalizer
+- #omnisafe.envs.wrapper.ObsNormalize
+- ../_modules/omnisafe/envs/wrapper.html#ObsNormalize.reset
+- #omnisafe.envs.wrapper.ObsNormalize.reset
+- ../_modules/omnisafe/envs/wrapper.html#ObsNormalize.save
+- #omnisafe.envs.wrapper.ObsNormalize.save
+- ../_modules/omnisafe/envs/wrapper.html#ObsNormalize.step
+- #omnisafe.envs.wrapper.ObsNormalize.step
+- #reward-normalization-wrapper
+- ../_modules/omnisafe/envs/wrapper.html#RewardNormalize
+- #omnisafe.envs.wrapper.RewardNormalize
+- core.html#omnisafe.envs.core.CMDP
+- ../common/normalizer.html#omnisafe.common.normalizer.Normalizer
+- #omnisafe.envs.wrapper.RewardNormalize
+- ../_modules/omnisafe/envs/wrapper.html#RewardNormalize.save
+- #omnisafe.envs.wrapper.RewardNormalize.save
+- ../_modules/omnisafe/envs/wrapper.html#RewardNormalize.step
+- #omnisafe.envs.wrapper.RewardNormalize.step
+- #cost-normalization-wrapper
+- ../_modules/omnisafe/envs/wrapper.html#CostNormalize
+- #omnisafe.envs.wrapper.CostNormalize
+- core.html#omnisafe.envs.core.CMDP
+- ../common/normalizer.html#omnisafe.common.normalizer.Normalizer
+- #omnisafe.envs.wrapper.CostNormalize
+- ../_modules/omnisafe/envs/wrapper.html#CostNormalize.save
+- #omnisafe.envs.wrapper.CostNormalize.save
+- ../_modules/omnisafe/envs/wrapper.html#CostNormalize.step
+- #omnisafe.envs.wrapper.CostNormalize.step
+- #action-scale
+- ../_modules/omnisafe/envs/wrapper.html#ActionScale
+- #omnisafe.envs.wrapper.ActionScale
+- core.html#omnisafe.envs.core.CMDP
+- #omnisafe.envs.wrapper.ActionScale
+- ../_modules/omnisafe/envs/wrapper.html#ActionScale.step
+- #omnisafe.envs.wrapper.ActionScale.step
+- #action-repeat
+- ../_modules/omnisafe/envs/wrapper.html#ActionRepeat
+- #omnisafe.envs.wrapper.ActionRepeat
+- core.html#omnisafe.envs.core.CMDP
+- ../_modules/omnisafe/envs/wrapper.html#ActionRepeat.step
+- #omnisafe.envs.wrapper.ActionRepeat.step
+- #unsqueeze-wrapper
+- ../_modules/omnisafe/envs/wrapper.html#Unsqueeze
+- #omnisafe.envs.wrapper.Unsqueeze
+- #omnisafe.envs.wrapper.Unsqueeze
+- ../_modules/omnisafe/envs/wrapper.html#Unsqueeze.reset
+- #omnisafe.envs.wrapper.Unsqueeze.reset
+- ../_modules/omnisafe/envs/wrapper.html#Unsqueeze.step
+- #omnisafe.envs.wrapper.Unsqueeze.step
+- safety_gymnasium.html
+- core.html
+- https://www.sphinx-doc.org/
+- https://pradyunsg.me
+- https://github.com/pradyunsg/furo
+- https://readthedocs.org/projects/omnisafe
+- #
+- #time-limit-wrapper
+- #omnisafe.envs.wrapper.TimeLimit
+- #omnisafe.envs.wrapper.TimeLimit.reset
+- #omnisafe.envs.wrapper.TimeLimit.step
+- #auto-reset-wrapper
+- #omnisafe.envs.wrapper.AutoReset
+- #omnisafe.envs.wrapper.AutoReset.step
+- #observation-normalization-wrapper
+- #omnisafe.envs.wrapper.ObsNormalize
+- #omnisafe.envs.wrapper.ObsNormalize.reset
+- #omnisafe.envs.wrapper.ObsNormalize.save
+- #omnisafe.envs.wrapper.ObsNormalize.step
+- #reward-normalization-wrapper
+- #omnisafe.envs.wrapper.RewardNormalize
+- #omnisafe.envs.wrapper.RewardNormalize.save
+- #omnisafe.envs.wrapper.RewardNormalize.step
+- #cost-normalization-wrapper
+- #omnisafe.envs.wrapper.CostNormalize
+- #omnisafe.envs.wrapper.CostNormalize.save
+- #omnisafe.envs.wrapper.CostNormalize.step
+- #action-scale
+- #omnisafe.envs.wrapper.ActionScale
+- #omnisafe.envs.wrapper.ActionScale.step
+- #action-repeat
+- #omnisafe.envs.wrapper.ActionRepeat
+- #omnisafe.envs.wrapper.ActionRepeat.step
+- #unsqueeze-wrapper
+- #omnisafe.envs.wrapper.Unsqueeze
+- #omnisafe.envs.wrapper.Unsqueeze.reset
+- #omnisafe.envs.wrapper.Unsqueeze.step

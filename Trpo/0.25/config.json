@@ -1,0 +1,82 @@
+{
+    "algo_cfgs": {
+        "adv_estimation_method": "gae",
+        "batch_size": 512,
+        "cg_damping": 0.1,
+        "cg_iters": 15,
+        "cost_gamma": 0.99,
+        "cost_normalize": false,
+        "critic_norm_coef": 0.001,
+        "entropy_coef": 0.0,
+        "fvp_obs": "None",
+        "fvp_sample_freq": 1,
+        "gamma": 0.99,
+        "kl_early_stop": false,
+        "lam": 0.95,
+        "lam_c": 0.95,
+        "max_grad_norm": 40.0,
+        "obs_normalize": true,
+        "penalty_coef": 0.0,
+        "reward_normalize": false,
+        "standardized_cost_adv": true,
+        "standardized_rew_adv": true,
+        "steps_per_epoch": 10000,
+        "target_kl": 0.01,
+        "update_iters": 10,
+        "use_cost": true,
+        "use_critic_norm": true,
+        "use_max_grad_norm": true
+    },
+    "lagrange_cfgs": {
+        "cost_limit": 100.0,
+        "lagrangian_multiplier_init": 0.25,
+        "lambda_lr": 0.0,
+        "lambda_optimizer": "Adam"
+    },
+    "logger_cfgs": {
+        "log_dir": "./runs",
+        "save_model_freq": 100,
+        "use_tensorboard": true,
+        "use_wandb": false,
+        "wandb_project": "omnisafe",
+        "window_lens": 100
+    },
+    "model_cfgs": {
+        "actor": {
+            "activation": "tanh",
+            "hidden_sizes": [
+                64,
+                64
+            ],
+            "lr": null
+        },
+        "actor_type": "gaussian_learning",
+        "critic": {
+            "activation": "tanh",
+            "hidden_sizes": [
+                64,
+                64
+            ],
+            "lr": 0.001
+        },
+        "exploration_noise_anneal": false,
+        "linear_lr_decay": false,
+        "std_range": [
+            0.425,
+            0.3
+        ],
+        "weight_initialization_mode": "kaiming_uniform"
+    },
+    "seed": 0,
+    "train_cfgs": {
+        "device": "cpu",
+        "parallel": 1,
+        "torch_threads": 16,
+        "total_steps": 10000000,
+        "vector_env_nums": 1,
+        "epochs": 1000
+    },
+    "exp_name": "TRPOLag-{SafetyPointGoal2-v0}",
+    "env_id": "SafetyPointGoal2-v0",
+    "algo": "TRPOLag"
+}
